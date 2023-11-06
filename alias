@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+alias a="git add ."
+alias s="git status "
+alias d="pycodestyle "
+alias c="git commit -m "
+alias p="git push"
+alias e="chmod +x *.py"
+

@@ -31,9 +31,16 @@ class BaseModel:
         """
         self.updated_at = datetime.datetime.now()
 
-    def to_dic(self):
+    def to_dict(self):
         """
         returns dictionary containing all keys/values
         of __dict__ of the instance
         """
-        pass
+        self.__dict__["__class__"] = self.__class__.__name__
+        self.__dict__["created_at"] = self.created_at.isoformat(
+            sep="T", timespec="auto"
+        )
+        self.__dict__["updated_at"] = self.updated_at.strftime(
+            "%Y-%m-%dT%H:%M:%S.%f"
+        )
+        return self.__dict__

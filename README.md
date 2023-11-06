@@ -16,7 +16,7 @@ For this project, we expect you to look at these concepts:
 - [Python packages](https://intranet.alxswe.com/concepts/66)
 - [AirBnB clone](https://intranet.alxswe.com/concepts/66)
 
-
+![AirBnB image](https://s3.amazonaws.com/alx-intranet.hbtn.io/uploads/medias/2018/6/65f4a1dd9c51265f49d0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20231106%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231106T121645Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=cdf56bf0c4cc2c5d8d52c51c4f3447731368a619b9f5943468d342ad3504475c)
 ### Background Context
 #### Welcome to the AirBnB clone project!
 Before starting, please read the AirBnB concept page.

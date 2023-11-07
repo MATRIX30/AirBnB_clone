@@ -5,7 +5,7 @@
 `OOP`
  - By: Guillaume
  - Weight: 5
- - Project to be done in teams of 2 people (your team: Bernard Udo, Tekoh Palma ACHU)
+ - Project to be done in teams of 2 people (your team:Tekoh Palma ACHU)
  Project will start Nov 6, 2023 4:00 AM, must end by Nov 13, 2023 4:00 AM
  - Checker will be released at Nov 11, 2023 10:00 AM
  Manual QA review must be done (request it when you are done with the project)

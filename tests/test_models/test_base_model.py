@@ -24,6 +24,8 @@ class TestBaseModel(unittest.TestCase):
         # test if when an object is created both created_at and update_at are same
         base = BaseModel()
         self.assertEqual(base.created_at, base.updated_at)
+        
+        
     
     def test__str__(self):
         """Test __str__ return value"""
@@ -50,4 +52,7 @@ class TestBaseModel(unittest.TestCase):
         # testing if __class__ key exist in dic
         
          
+    def test_create_baseModel_from_dict(self):
+        """Testing creation of base model from dict datastructure"""
+        pass
         

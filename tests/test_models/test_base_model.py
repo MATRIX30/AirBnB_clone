@@ -33,3 +33,21 @@ class TestBaseModel(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as str_out:
             print(base)
             self.assertEqual(str_out.getvalue(), res)
+    
+    def test_to_dict(self):
+        """Test for to_dic method"""
+        base = BaseModel()
+        dic = base.to_dict()
+        # assert method returns dictionary
+        self.assertIsInstance(dic,dict)
+        # assert creat_at and update_at are all strings
+        self.assertIsInstance(dic['created_at'], str)
+        self.assertIsInstance(dic['updated_at'], str)
+        
+        # assert the dic has a key called __class__  having the class name
+        self.assertEqual(dic['__class__'], base.__class__.__name__)
+        
+        # testing if __class__ key exist in dic
+        
+         
+        

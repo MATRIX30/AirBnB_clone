@@ -12,11 +12,20 @@ class BaseModel:
     and methods used by other classes in the AirBnB project
     """
 
-    def __init__(self) -> None:
+    def __init__(self, *args, **kwargs) -> None:
         """Base Model constructor"""
-        self.id = str(uuid.uuid4())
-        self.created_at = datetime.datetime.now()
-        self.updated_at = self.created_at
+        if bool(kwargs):
+            if 'id' in kwargs.keys():
+                self.id = kwargs['id']
+            if 'created_at' in kwargs.keys():
+                self.created_at = datetime.datetime.strptime(kwargs['created_at'],"%Y-%m-%dT%H:%M:%S.%f")
+            if 'updated_at' in kwargs.keys():
+                self.updated_at = datetime.datetime.strptime(kwargs['updated_at'],"%Y-%m-%dT%H:%M:%S.%f")   
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.datetime.now()
+            self.updated_at = self.created_at
+
 
     def __str__(self) -> str:
         """prints out the str representation of base model object"""

@@ -28,7 +28,8 @@ class FileStorage:
         """
         key = "{:s}.{:s}".format(obj.__class__.__name__, obj.id)
         # if key in self.__objects.keys():
-        FileStorage.__objects[key] = obj.to_dict()
+        #FileStorage.__objects[key] = obj.to_dict()
+        FileStorage.__objects[key] = obj
         
     def save(self):
         """
@@ -36,10 +37,13 @@ class FileStorage:
         file (path: __file_path)
         """
 
-        if bool(self.__objects) and len(self.__file_path) > 0:
-            data = json.dumps(self.__objects)
-            with open(self.__file_path, 'w') as file_handler:
-                file_handler.write(data)
+        if bool(FileStorage.__objects) and len(FileStorage.__file_path) > 0:
+            # convert each obj of __objects to its dict representation 
+            data = {key: obj.to_dict() for key, obj in FileStorage.__objects.items()}
+            #data = json.dumps(FileStorage.__objects)
+            # converting the data dict to json string and writing it to __file_path
+            with open(FileStorage.__file_path, 'w') as file_handler:
+                json.dump(data, file_handler)
                 
        
     def reload(self):
@@ -50,8 +54,8 @@ class FileStorage:
          no exception should be raised)
         """
         if os.path.exists(FileStorage.__file_path):
-            loaded_obj = {}
-            with open(self.__file_path, "r") as file_handler:
+            
+            with open(FileStorage.__file_path, "r") as file_handler:
                 # self.__objects = json.load(file_handler)
                 loaded_obj = json.load(file_handler)
             
@@ -59,4 +63,5 @@ class FileStorage:
             for obj_id in loaded_obj.keys():
                 obj = loaded_obj[obj_id]
                 loaded_instance=eval(obj["__class__"])(**obj)
+                print(type(loaded_instance))
                 self.new(loaded_instance)

@@ -16,16 +16,34 @@ class BaseModel:
     def __init__(self, *args, **kwargs) -> None:
         """Base Model constructor"""
         if bool(kwargs):
+            """
             if 'id' in kwargs.keys():
                 self.id = kwargs['id']
             if 'created_at' in kwargs.keys():
                 self.created_at = datetime.datetime.strptime(kwargs['created_at'],"%Y-%m-%dT%H:%M:%S.%f")
             if 'updated_at' in kwargs.keys():
-                self.updated_at = datetime.datetime.strptime(kwargs['updated_at'],"%Y-%m-%dT%H:%M:%S.%f")   
+                self.updated_at = datetime.datetime.strptime(kwargs['updated_at'],"%Y-%m-%dT%H:%M:%S.%f")
+            """
+            #updated implementation
+            print("printing kwargs-----------")
+            print(kwargs)
+            for key in kwargs.keys():
+                if key == 'id':
+                    self.id = kwargs['id']
+                if key == 'created_at':
+                    self.created_at = datetime.datetime.strptime(kwargs['created_at'],"%Y-%m-%dT%H:%M:%S.%f")
+                if key == 'updated_at':
+                    self.updated_at = datetime.datetime.strptime(kwargs['updated_at'],"%Y-%m-%dT%H:%M:%S.%f")
+                if key == '__class__':
+                    continue
+                else:
+                    setattr(self, key, kwargs[key])
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.datetime.now()
-            self.updated_at = self.created_at.replace()
+            self.updated_at = datetime.datetime.now()
+            # if the updated_at date needs to be same like creation date
+            # self.updated_at = self.created_at.replace()
             models.storage.new(self)
 
 
@@ -61,5 +79,4 @@ class BaseModel:
             "%Y-%m-%dT%H:%M:%S.%f"
         )
         """
-        
         return dict_repr

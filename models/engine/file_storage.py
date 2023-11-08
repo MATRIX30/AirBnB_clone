@@ -4,13 +4,15 @@
 
 import json
 import os
+from models.base_model import BaseModel
+
 class FileStorage:
     """ 
     file storage class FileStorage that serializes
     instances to a JSON file and deserializes JSON
     file to instances:
     """
-    __file_path = ""
+    __file_path = "file.json"
     __objects = {}
     
     def all(self):
@@ -26,16 +28,19 @@ class FileStorage:
         """
         key = "{:s}.{:s}".format(obj.__class__.__name__, obj.id)
         # if key in self.__objects.keys():
-        self.__objects[key] = obj
+        FileStorage.__objects[key] = obj.to_dict()
         
     def save(self):
         """
         serializes __objects to the JSON
         file (path: __file_path)
         """
-        if not bool(self.__objects):
+
+        if bool(self.__objects) and len(self.__file_path) > 0:
+            data = json.dumps(self.__objects)
             with open(self.__file_path, 'w') as file_handler:
-                json.dump(self.__objects, file_handler)
+                file_handler.write(data)
+                
        
     def reload(self):
         """
@@ -44,7 +49,14 @@ class FileStorage:
          otherwise, do nothing. If the file doesn’t exist,
          no exception should be raised)
         """
-        if os.path.exists(self.__file_path):
+        if os.path.exists(FileStorage.__file_path):
+            loaded_obj = {}
             with open(self.__file_path, "r") as file_handler:
-                self.__objects = json.load(file_handler)
-        
+                # self.__objects = json.load(file_handler)
+                loaded_obj = json.load(file_handler)
+            
+            #self.__objects = loaded_obj
+            for obj_id in loaded_obj.keys():
+                obj = loaded_obj[obj_id]
+                loaded_instance=eval(obj["__class__"])(**obj)
+                self.new(loaded_instance)

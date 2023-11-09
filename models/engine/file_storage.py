@@ -3,6 +3,7 @@
 
 
 import json
+from json.decoder import JSONDecodeError
 import os
 from models.base_model import BaseModel
 
@@ -17,7 +18,7 @@ class FileStorage:
     
     def all(self):
         """ returns the dictionary objects"""
-        return self.__objects
+        return FileStorage.__objects
     def new(self, obj):
         """
          sets in __objects the obj with
@@ -39,7 +40,8 @@ class FileStorage:
 
         if bool(FileStorage.__objects) and len(FileStorage.__file_path) > 0:
             # convert each obj of __objects to its dict representation 
-            data = {key: obj.to_dict() for key, obj in FileStorage.__objects.items()}
+            data = {
+                key: obj.to_dict() for key, obj in FileStorage.__objects.items()}
             #data = json.dumps(FileStorage.__objects)
             # converting the data dict to json string and writing it to __file_path
             with open(FileStorage.__file_path, 'w') as file_handler:
@@ -54,14 +56,18 @@ class FileStorage:
          no exception should be raised)
         """
         if os.path.exists(FileStorage.__file_path):
-            
-            with open(FileStorage.__file_path, "r") as file_handler:
-                # self.__objects = json.load(file_handler)
-                loaded_obj = json.load(file_handler)
-            
+            try:
+                with open(FileStorage.__file_path, "r") as file_handler:
+                    # self.__objects = json.load(file_handler)
+                    loaded_obj = json.load(file_handler)
+            except (JSONDecodeError):
+                """do nothing if decode error occurs"""
+                return
+            res_dict = {}
             #self.__objects = loaded_obj
             for obj_id in loaded_obj.keys():
                 obj = loaded_obj[obj_id]
                 loaded_instance=eval(obj["__class__"])(**obj)
-                print(type(loaded_instance))
-                self.new(loaded_instance)
+                res_dict[obj_id] = loaded_instance
+                
+            FileStorage.__objects = res_dict

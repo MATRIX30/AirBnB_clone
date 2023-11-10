@@ -69,5 +69,4 @@ class FileStorage:
                 obj = loaded_obj[obj_id]
                 loaded_instance=eval(obj["__class__"])(**obj)
                 res_dict[obj_id] = loaded_instance
-                
             FileStorage.__objects = res_dict

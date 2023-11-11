@@ -30,6 +30,7 @@ class HBNBCommand(cmd.Cmd):
         """ EOF command to exit the program when
         an end of file(EOF) character is reached 
         """
+        print("")
         return True
     
     def emptyline(self):
@@ -40,7 +41,7 @@ class HBNBCommand(cmd.Cmd):
         """called  when the loop stops"""
         return
     
-    def do_create(self, line):
+    def do_create(self, line:str):
         """Creates a new instance of a class"""
         args = []
         args = line.split()
@@ -55,7 +56,7 @@ class HBNBCommand(cmd.Cmd):
         print(new_instance.id)
     
     
-    def do_show(self, line):
+    def do_show(self, line:str):
         """
         prints the string representation of and instance
         base on the class name and id
@@ -80,7 +81,7 @@ class HBNBCommand(cmd.Cmd):
                 return
         print("** no instance found **")
     
-    def do_destroy(self, line):
+    def do_destroy(self, line:str):
         """
          Deletes an instance based on the class name and 
          id (save the change into the JSON file)
@@ -106,7 +107,7 @@ class HBNBCommand(cmd.Cmd):
                 return
         print("** no instance found **")
        
-    def do_all(self, line):
+    def do_all(self, line :str):
         """
         Prints all string representation of all 
         instances based or not on the class name.
@@ -168,7 +169,6 @@ class HBNBCommand(cmd.Cmd):
             return
         
         # determine the datatype of the  value and do casting
-        
         try:
            arg_type = type(selected_instance.__dict__[args[2]])
            print(type(args[3]))
@@ -177,10 +177,34 @@ class HBNBCommand(cmd.Cmd):
         except Exception:
             print("fail to update value")
             return
-        
         setattr(selected_instance,args[2],args[3])
         storage.save()
         
+    def do_count(self, line: str):
+        """
+        counts the number of instances of a class
+        Usage: count <className> or <className>.count()
+        """
+        args = []
+        args = line.split()
+        count = 0
+        all_objs = storage.all()
+        if bool(args) and len(args) == 1:
+            for obj_id in all_objs.keys():
+                if args[0] == obj_id.split(".")[0]:
+                    count += 1
+            print(count)
+            return
+        print("Usage: count <className>")
+        
+    
+    def default(self, line: str):
+        """
+        Default method that executes when a command entered 
+        cant find a corresponding function to call or execute
+        """
+        print(line)
+        print("Hello unknown command man")
         
               
 

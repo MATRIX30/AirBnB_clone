@@ -1,3 +1,5 @@
 # Project Author(s)
-	- Tekoh Palma Achu <Tekohpalma@gmail.com>
-	
+This project was realized all thanks the contributions of the following Author(s)
+##  Tekoh Palma Achu 
+* Email: `Tekohpalma@gmail.com`
+* Github: `Matrix30`

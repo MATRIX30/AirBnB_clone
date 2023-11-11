@@ -5,8 +5,13 @@ import cmd
 from typing import IO
 from models.base_model import BaseModel
 from models.user import User
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 from models.engine.file_storage import FileStorage
 from models import storage
+import ast
 
 classes = ["BaseModel", "User","Place",
         "State", "City", "Amenity" , "Review"]
@@ -152,13 +157,27 @@ class HBNBCommand(cmd.Cmd):
             print("** attribute name missing **")
             return
         selected_instance = all_objects[key]
-        print(type(selected_instance))
-        print(selected_instance)
+    
         if args[2] not in selected_instance.to_dict().keys():
             print("** value missing **")
             return
         if len(args) > 4:
             args = args[:4]
+            
+        if args[2] in ['created_at', 'id']:
+            return
+        
+        # determine the datatype of the  value and do casting
+        
+        try:
+           arg_type = type(selected_instance.__dict__[args[2]])
+           print(type(args[3]))
+           args[3] = arg_type(args[3])
+           print(type(args[3]))
+        except Exception:
+            print("fail to update value")
+            return
+        
         setattr(selected_instance,args[2],args[3])
         storage.save()
         

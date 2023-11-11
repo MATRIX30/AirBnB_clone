@@ -1,26 +1,33 @@
 
+# ✈️ Description of AirBnB Console Project
 
-# Description of AirBnB Console Project
 ## 0x00. AirBnB clone - The console
+
 `Group project`
 `Python`
 `OOP`
- - By: Guillaume
- - Weight: 5
- - Project to be done in teams of 2 people (your team:Tekoh Palma ACHU)
+
+- By: Guillaume
+- Weight: 5
+- Project to be done in teams of 2 people (your team:Tekoh Palma ACHU)
  Project will start Nov 6, 2023 4:00 AM, must end by Nov 13, 2023 4:00 AM
- - Checker will be released at Nov 11, 2023 10:00 AM
+- Checker will be released at Nov 11, 2023 10:00 AM
  Manual QA review must be done (request it when you are done with the project)
- - An auto review will be launched at the deadline
+- An auto review will be launched at the deadline
+
 ### Concepts
+
 For this project, we expect you to look at these concepts:
 
 - [Python packages](https://intranet.alxswe.com/concepts/66)
 - [AirBnB clone](https://intranet.alxswe.com/concepts/66)
 
-![AirBnB_image](https://s3.amazonaws.com/alx-intranet.hbtn.io/uploads/medias/2018/6/65f4a1dd9c51265f49d0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20231109%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231109T001157Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=d689efb452e9e60004422bc240abd26b6563226ad48851e41d420dc8f9ce2e67)
+![AirBnB_image](https://s3.amazonaws.com/alx-intranet.hbtn.io/uploads/medias/2018/6/65f4a1dd9c51265f49d0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20231111%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231111T014150Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=14a5245473052e0863fc0fd00184285e42d2b3909829e1b1fb0228e4fc1d754c)
+
 ### Background Context
-#### Welcome to the AirBnB clone project!
+
+#### Welcome to the AirBnB clone project
+
 Before starting, please read the AirBnB concept page.
 
 First step: Write a command interpreter to manage your AirBnB objects.
@@ -33,7 +40,9 @@ Each task is linked and will help you to:
 - create all classes used for AirBnB (`User`, `State`, `City`, `Place…`) that inherit from `BaseModel`
 - create the first abstracted storage engine of the project: File storage.
 - create all unittests to validate all our classes and storage engine
+
 ### What’s a command interpreter?
+
 Do you remember the Shell? It’s exactly the same but limited to a specific use-case. In our case, we want to be able to manage the objects of our project:
 
 - Create a new object (ex: a new User or a new Place)
@@ -41,12 +50,14 @@ Do you remember the Shell? It’s exactly the same but limited to a specific use
 - Do operations on objects (count, compute stats, etc…)
 - Update attributes of an object
 - Destroy an object
+
 ## Resources
-#### Read or watch:
+
+### Read or watch
 
 - [cmd module](https://intranet.alxswe.com/rltoken/8ecCwE6veBmm3Nppw4hz5A)
 - [cmd module in depth](https://intranet.alxswe.com/rltoken/uEy4RftSdKypoig9NFTvCg)
-- [packages concept page]()
+- [packages concept page](https://intranet.alxswe.com/concepts/66)
 - [uuid module](https://intranet.alxswe.com/rltoken/KfL9TqwdI69W6ttG6gTPPQ)
 - [datetime](https://intranet.alxswe.com/rltoken/1d8I3jSKgnYAtA1IZfEDpA)
 - [unittest module](https://intranet.alxswe.com/rltoken/IlFiMB8UmqBG2CxA0AD3jA)
@@ -56,9 +67,11 @@ Do you remember the Shell? It’s exactly the same but limited to a specific use
 - [python unittest](https://intranet.alxswe.com/rltoken/begh14KQA-3ov29KvD_HvA)
 
 ## Learning Objectives
+
 At the end of this project, you are expected to be able to explain to anyone, without the help of Google:
 
 ### General
+
 - How to create a Python package
 - How to create a command interpreter in Python using the cmd module
 - What is Unit testing and how to implement it in a large project
@@ -69,13 +82,18 @@ At the end of this project, you are expected to be able to explain to anyone, wi
 - What is *args and how to use it
 - What is **kwargs and how to use it
 - How to handle named arguments in a function
+
 ### Copyright - Plagiarism
+
 - You are tasked to come up with solutions for the tasks below yourself to meet with the above learning objectives.
 - You will not be able to meet the objectives of this or any following project by copying and pasting someone else’s work.
 - You are not allowed to publish any content of this project.
 - Any form of plagiarism is strictly forbidden and will result in removal from the program.
+
 ## Requirements
+
 ### Python Scripts
+
 - Allowed editors: vi, vim, emacs
 - All your files will be interpreted/compiled on Ubuntu 20.04 LTS using python3 (version 3.8.5)
 - All your files should end with a new line
@@ -104,11 +122,15 @@ At the end of this project, you are expected to be able to explain to anyone, wi
 - All your classes should have a documentation (python3 -c 'print(__import__("my_module").MyClass.__doc__)')
 - All your functions (inside and outside a class) should have a documentation (python3 -c 'print(__import__("my_module").my_function.__doc__)' and python3 -c 'print(__import__("my_module").MyClass.my_function.__doc__)')
 - We strongly encourage you to work together on test cases, so that you don’t miss any edge case
+
 ### GitHub
+
 There should be one project repository per group. If you clone/fork/whatever a project repository with the same name before the second deadline, you risk a 0% score.
 
 ## More Info
+
 ### Execution
+
 Your shell should work like this in interactive mode:
 
 ```$ ./console.py
@@ -147,6 +169,11 @@ EOF  help  quit
 (hbnb) 
 $
 ```
+
 All tests should also pass in non-interactive mode: $ echo "python3 -m unittest discover tests" | bash
+
+# Architecture of the System
+
+![AirBnB Architecture](https://s3.amazonaws.com/alx-intranet.hbtn.io/uploads/medias/2018/6/815046647d23428a14ca.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20231111%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231111T014150Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=48de3e8910b98ec3093aa8b5cd4a55aa216c76db2080d7a2062a178552dcc0fd)
 
 # Description of team 💻

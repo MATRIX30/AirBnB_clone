@@ -200,9 +200,24 @@ class HBNBCommand(cmd.Cmd):
         Default method that executes when a command entered
         cant find a corresponding function to call or execute
         """
-        clss, command = line.split(".")
-        print(clss in classes)
-        print("Hello unknown command man")
+        commands = {
+            "create": self.do_create,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "all": self.do_all,
+            "update": self.do_update,
+            "count": self.do_count,
+        }
+        if "." in line and line[-1] == ")":
+            class_name, command = line.split(".")
+            # print(command.split("("))
+            if class_name in classes:
+                if command.split("(")[0] in commands.keys():
+                    comd = command.split("(")[0]
+                    commands[comd](class_name)
+                    return
+                return True
+        return cmd.Cmd.default(self, line)
 
 
 if __name__ == "__main__":

@@ -9,6 +9,7 @@ from black import assert_equivalent
 from models.user import User
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
+import json
 
 
 class TestUser(unittest.TestCase):
@@ -62,5 +63,10 @@ class TestUser(unittest.TestCase):
     def test_save(self):
         # testing if save method works for user class
         u3 = User()
+
         b = BaseModel()
         self.assertTrue(u3)
+
+
+if __name__ == "__main__":
+    unittest.main()

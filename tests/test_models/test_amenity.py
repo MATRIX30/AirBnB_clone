@@ -38,3 +38,7 @@ class TestAmenity(unittest.TestCase):
         # test if user attribute can be created from kwarg
         a1 = Amenity(price=20000)
         self.assertEqual(a1.price, 20000)
+
+
+if __name__ == "__main__":
+    unittest.main()

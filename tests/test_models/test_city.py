@@ -49,3 +49,7 @@ class TestCity(unittest.TestCase):
         c3 = City()
         b = BaseModel()
         self.assertTrue(c3)
+
+
+if __name__ == "__main__":
+    unittest.main()

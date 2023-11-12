@@ -13,8 +13,14 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from models.state import State
+from models.engine.file_storage import FileStorage
+
 
 class TestFileStorage(unittest.TestCase):
     """Test class for filestorage"""
 
-    pass
+    def test_FileStorage_instantiation_no_args(self):
+        self.assertEqual(type(FileStorage()), FileStorage)
+
+if __name__ == "__main__":
+    unittest.main()

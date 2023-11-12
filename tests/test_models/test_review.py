@@ -54,3 +54,7 @@ class TestReview(unittest.TestCase):
         r3 = Review()
         b = BaseModel()
         self.assertTrue(r3)
+
+
+if __name__ == "__main__":
+    unittest.main()

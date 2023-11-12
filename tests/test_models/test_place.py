@@ -75,3 +75,7 @@ class TestPlace(unittest.TestCase):
         self.assertEqual(p1.latitude, 0.0)
         self.assertEqual(p1.longitude, 0.0)
         self.assertEqual(p1.amenity_ids, [])
+
+
+if __name__ == "__main__":
+    unittest.main()

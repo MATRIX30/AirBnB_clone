@@ -219,9 +219,6 @@ class HBNBCommand(cmd.Cmd):
                         # appropriat function
                         commands[instruction](class_name)
 
-                    t = command.split("(")
-                    print(t)
-
                     return
                 else:
                     print("")

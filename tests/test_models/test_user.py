@@ -8,6 +8,7 @@ import unittest
 from black import assert_equivalent
 from models.user import User
 from models.base_model import BaseModel
+from models import storage
 
 
 class TestUser(unittest.TestCase):
@@ -57,5 +58,9 @@ class TestUser(unittest.TestCase):
         # test if user attribute can be created from kwarg
         u1 = User(age=2)
         self.assertEqual(u1.age, 2)
+
+    def test_save(self):
         # testing if save method works for user class
-        # user1.save()
+        u3 = User()
+        b = BaseModel()
+        self.assertTrue(u3)

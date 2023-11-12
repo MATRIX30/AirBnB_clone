@@ -71,11 +71,10 @@ class FileStorage:
             except JSONDecodeError:
                 """do nothing if decode error occurs"""
                 return
-            res_dict = {}
+            res_dict = {} 
             # self.__objects = loaded_obj
-            for obj_id in loaded_obj.keys():
+            for obj_id in loaded_obj.keys(): 
                 obj = loaded_obj[obj_id]
                 loaded_instance = eval(obj["__class__"])(**obj)
-            #   res_dict[obj_id] = loaded_instance
-            # FileStorage.__objects = res_dict
-            #self.new(loaded_instance)
+                res_dict[obj_id] = loaded_instance
+            FileStorage.__objects = res_dict

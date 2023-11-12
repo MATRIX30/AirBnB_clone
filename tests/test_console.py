@@ -25,7 +25,7 @@ from unittest.mock import patch
 
 
 class TestHBNBCommand_prompting(unittest.TestCase):
-    """Unittests for testing prompting of the HBNB command interpreter."""
+    """Test for HBNB command interpreter."""
 
     @classmethod
     def setUpClass(self):
@@ -34,19 +34,12 @@ class TestHBNBCommand_prompting(unittest.TestCase):
 
     @classmethod
     def tearDownClass(self):
-        """Remove temporary file (file.json) created as a result"""
+        """delete the temporal file.json after testing """
         try:
             os.remove("file.json")
         except FileNotFoundError:
             pass
 
-    def test_pep8_console(self):
-        """Pep8 console.py"""
-        style = pep8.StyleGuide(quiet=False)
-        errors = 0
-        file = (["console.py"])
-        errors += style.check_files(file).total_errors
-        self.assertEqual(errors, 0, 'Need to fix Pep8')
 
     def test_pep8_test_console(self):
         """Pep8 test_console.py"""

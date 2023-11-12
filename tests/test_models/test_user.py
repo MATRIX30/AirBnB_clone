@@ -8,7 +8,7 @@ import unittest
 from black import assert_equivalent
 from models.user import User
 from models.base_model import BaseModel
-from models import storage
+
 
 
 class TestUser(unittest.TestCase):

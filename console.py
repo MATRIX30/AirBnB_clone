@@ -13,35 +13,34 @@ from models.engine.file_storage import FileStorage
 from models import storage
 import ast
 
-classes = ["BaseModel", "User","Place",
-        "State", "City", "Amenity" , "Review"]
+classes = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
+
 
 class HBNBCommand(cmd.Cmd):
     """main console class"""
+
     prompt = "(hbnb) "
-    
 
     def do_quit(self, command):
-        """Quit command to exit the program
-        """
+        """Quit command to exit the program"""
         return True
-    
+
     def do_EOF(self, command):
-        """ EOF command to exit the program when
-        an end of file(EOF) character is reached 
+        """EOF command to exit the program when
+        an end of file(EOF) character is reached
         """
         print("")
         return True
-    
+
     def emptyline(self):
         """called when the user enters nothing and hits enter"""
         return ""
-    
+
     def postloop(self):
         """called  when the loop stops"""
         return
-    
-    def do_create(self, line:str):
+
+    def do_create(self, line: str):
         """Creates a new instance of a class"""
         args = []
         args = line.split()
@@ -54,9 +53,8 @@ class HBNBCommand(cmd.Cmd):
         new_instance = eval(args[0])()
         new_instance.save()
         print(new_instance.id)
-    
-    
-    def do_show(self, line:str):
+
+    def do_show(self, line: str):
         """
         prints the string representation of and instance
         base on the class name and id
@@ -72,7 +70,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        
+
         all_objects = storage.all()
         for key in all_objects.keys():
             class_name, id = key.split(".")
@@ -80,11 +78,11 @@ class HBNBCommand(cmd.Cmd):
                 print(all_objects[key])
                 return
         print("** no instance found **")
-    
-    def do_destroy(self, line:str):
+
+    def do_destroy(self, line: str):
         """
-         Deletes an instance based on the class name and 
-         id (save the change into the JSON file)
+        Deletes an instance based on the class name and
+        id (save the change into the JSON file)
         """
         args = []
         args = line.split()
@@ -97,7 +95,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        
+
         all_objects = storage.all()
         for key in all_objects.keys():
             class_name, id = key.split(".")
@@ -106,10 +104,10 @@ class HBNBCommand(cmd.Cmd):
                 storage.save()
                 return
         print("** no instance found **")
-       
-    def do_all(self, line :str):
+
+    def do_all(self, line: str):
         """
-        Prints all string representation of all 
+        Prints all string representation of all
         instances based or not on the class name.
         """
         args = []
@@ -122,7 +120,7 @@ class HBNBCommand(cmd.Cmd):
             # elimintate any duplicate class name
             args = set(args)
             args = list(args)
-            for arg in args: 
+            for arg in args:
                 if arg not in classes:
                     print("** class doesn't exist **")
                     return
@@ -130,12 +128,12 @@ class HBNBCommand(cmd.Cmd):
                     class_name, id = key.split(".")
                     if class_name == arg:
                         print(all_objects[key])
-                        
+
     def do_update(self, line):
         """
         Updates an instance based on the class name and id by adding or
         updating attribute (save the change into the JSON file)
-        
+
         Usage: update <class name> <id> <attribute name> "<attribute value>"
         """
         args = []
@@ -149,7 +147,7 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 1:
             print("** instance id missing **")
             return
-        key = '.'.join([args[0], args[1]])
+        key = ".".join([args[0], args[1]])
         all_objects = storage.all()
         if key not in all_objects.keys():
             print("** no instance found **")
@@ -158,28 +156,28 @@ class HBNBCommand(cmd.Cmd):
             print("** attribute name missing **")
             return
         selected_instance = all_objects[key]
-    
+
         if args[2] not in selected_instance.to_dict().keys():
             print("** value missing **")
             return
         if len(args) > 4:
             args = args[:4]
-            
-        if args[2] in ['created_at', 'id']:
+
+        if args[2] in ["created_at", "id"]:
             return
-        
+
         # determine the datatype of the  value and do casting
         try:
-           arg_type = type(selected_instance.__dict__[args[2]])
-           print(type(args[3]))
-           args[3] = arg_type(args[3])
-           print(type(args[3]))
+            arg_type = type(selected_instance.__dict__[args[2]])
+            print(type(args[3]))
+            args[3] = arg_type(args[3])
+            print(type(args[3]))
         except Exception:
             print("fail to update value")
             return
-        setattr(selected_instance,args[2],args[3])
+        setattr(selected_instance, args[2], args[3])
         storage.save()
-        
+
     def do_count(self, line: str):
         """
         counts the number of instances of a class
@@ -196,17 +194,16 @@ class HBNBCommand(cmd.Cmd):
             print(count)
             return
         print("Usage: count <className>")
-        
-    
+
     def default(self, line: str):
         """
-        Default method that executes when a command entered 
+        Default method that executes when a command entered
         cant find a corresponding function to call or execute
         """
-        print(line)
+        clss, command = line.split(".")
+        print(clss in classes)
         print("Hello unknown command man")
-        
-              
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

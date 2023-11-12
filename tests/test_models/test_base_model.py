@@ -26,8 +26,8 @@ class TestBaseModel(unittest.TestCase):
         # not more than 2 secs apart
         base = BaseModel()
         self.assertAlmostEqual(
-            base.created_at, base.updated_at,
-            delta=datetime.timedelta(seconds=2)
+            base.created_at, base.updated_at, delta=datetime.timedelta(
+                seconds=2)
         )
 
     def test__str__(self):

@@ -5,4 +5,5 @@ alias d="pycodestyle "
 alias c="git commit -m "
 alias p="git push"
 alias e="chmod +x *.py"
+alias b="black"
 

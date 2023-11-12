@@ -227,7 +227,7 @@ class HBNBCommand(cmd.Cmd):
                     print("")
                     return
             else:
-                print("** class name missing **")
+                print("** class doesn't exist **")
                 return
         return cmd.Cmd.default(self, line)
 

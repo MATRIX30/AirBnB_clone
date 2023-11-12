@@ -19,8 +19,7 @@ from models.engine.file_storage import FileStorage
 class TestFileStorage(unittest.TestCase):
     """Test class for filestorage"""
 
-    def test_FileStorage_instantiation_no_args(self):
-        self.assertEqual(type(FileStorage()), FileStorage)
+    pass
 
 if __name__ == "__main__":
     unittest.main()

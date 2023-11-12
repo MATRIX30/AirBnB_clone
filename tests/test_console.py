@@ -23,7 +23,7 @@ from io import StringIO
 from unittest.mock import patch
 
 
-class TestHBNBCommand_prompting(unittest.TestCase):
+class TestHBNBCommand(unittest.TestCase):
     """Test for HBNB command interpreter."""
 
     @classmethod
@@ -42,25 +42,17 @@ class TestHBNBCommand_prompting(unittest.TestCase):
     def test_prompt_string(self):
         self.assertEqual("(hbnb) ", HBNBCommand.prompt)
 
-
-
-class TestHBNBCommand_exit(unittest.TestCase):
-    """Unittests for testing exiting from the HBNB command interpreter."""
-
-    def test_quit_exits(self):
+    # testing quit() method
+    def test_quit(self):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertTrue(HBNBCommand().onecmd("quit"))
-
-    def test_EOF_exits(self):
+            
+    # testing EOF() method
+    def test_EOF(self):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertTrue(HBNBCommand().onecmd("EOF"))
-
-
-
-
-class TestHBNBCommand_show(unittest.TestCase):
-    """Unittests for testing show from the HBNB command interpreter"""
-
+            
+    # testing show method both <className>.show(<id>) and show()
     def test_show_missing_class(self):
         correct = "** class name missing **"
         with patch("sys.stdout", new=StringIO()) as output:
@@ -69,14 +61,9 @@ class TestHBNBCommand_show(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(".show()"))
             self.assertEqual(correct, output.getvalue().strip())
-
-   
-
-
-class TestHBNBCommand_destroy(unittest.TestCase):
-    """Unittests for testing destroy from the HBNB command interpreter."""
-
-    def test_destroy_missing_class(self):
+            
+    # testing destroy method both <className>.destroy(<id>) and destroy()
+    def test_destroy(self):
         correct = "** class name missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("destroy"))
@@ -85,10 +72,8 @@ class TestHBNBCommand_destroy(unittest.TestCase):
             self.assertFalse(HBNBCommand().onecmd(".destroy()"))
             self.assertEqual(correct, output.getvalue().strip())
 
-class TestHBNBCommand_all(unittest.TestCase):
-    """Unittests for testing all of the HBNB command interpreter."""
-
-    def test_all_invalid_class(self):
+    # testing all method <className>.all()
+    def test_all(self):
         correct = "** class doesn't exist **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("all MyModel"))
@@ -96,12 +81,9 @@ class TestHBNBCommand_all(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("MyModel.all()"))
             self.assertEqual(correct, output.getvalue().strip())
-
-class TestHBNBCommand_update(unittest.TestCase):
-    """Unittests for testing update from the HBNB command interpreter."""
-
-   
-    def test_update_missing_class(self):
+            
+    # testing update method both <className>.update(<id>) and update()
+    def test_update(self):
         correct = "** class name missing **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("update"))
@@ -109,8 +91,9 @@ class TestHBNBCommand_update(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(".update()"))
             """self.assertEqual(correct, output.getvalue().strip())"""
-
-    def test_count_invalid_class(self):
+            
+    # testing count method <className>.count()
+    def test_count(self):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("MyModel.count()"))
             """self.assertEqual("0", output.getvalue().strip())"""

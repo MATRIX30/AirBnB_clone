@@ -17,9 +17,9 @@ class BaseModel:
         """Base Model constructor"""
         if bool(kwargs):
             for key, value in kwargs.items():
-                if key == 'updated_at' or key == 'created_at':
-                    value = datetime.strptime(value,"%Y-%m-%dT%H:%M:%S.%f")
-                if key == '__class__':
+                if key == "updated_at" or key == "created_at":
+                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
+                if key == "__class__":
                     continue
 
                 setattr(self, key, value)
@@ -30,7 +30,6 @@ class BaseModel:
             # if the updated_at date needs to be same like creation date
             # self.updated_at = self.created_at.replace()
             models.storage.new(self)
-
 
     def __str__(self) -> str:
         """prints out the str representation of base model object"""
@@ -53,12 +52,10 @@ class BaseModel:
         """
         dict_repr = self.__dict__.copy()
         dict_repr["__class__"] = self.__class__.__name__
-        dict_repr["created_at"] = self.created_at.isoformat(
-            sep="T", timespec="auto"
-        )
-        dict_repr["updated_at"] = self.updated_at.isoformat(
-            sep="T", timespec="auto"
-        )
+        dict_repr["created_at"] = self.created_at.isoformat(sep="T",
+                                                            timespec="auto")
+        dict_repr["updated_at"] = self.updated_at.isoformat(sep="T",
+                                                            timespec="auto")
         """
         self.__dict__["updated_at"] = self.updated_at.strftime(
             "%Y-%m-%dT%H:%M:%S.%f"

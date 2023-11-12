@@ -2,8 +2,6 @@
 """
 Test module for base model
 """
-
-
 import unittest
 from models.base_model import BaseModel
 import datetime
@@ -59,6 +57,7 @@ class TestBaseModel(unittest.TestCase):
     def test_create_baseModel_from_dict(self):
         """Testing creation of base model from dict datastructure"""
         pass
+
 
 if __name__ == "__main__":
     unittest.main()

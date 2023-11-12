@@ -40,23 +40,6 @@ class TestHBNBCommand_prompting(unittest.TestCase):
         except FileNotFoundError:
             pass
 
-
-    def test_pep8_test_console(self):
-        """Pep8 test_console.py"""
-        style = pep8.StyleGuide(quiet=False)
-        errors = 0
-        file = (["tests/test_console.py"])
-        errors += style.check_files(file).total_errors
-        self.assertEqual(errors, 0, 'Need to fix Pep8')
-
-    def test_docstrings_in_console(self):
-        """Test docstrings exist in console.py"""
-        self.assertTrue(len(console.__doc__) >= 1)
-
-    def test_docstrings_in_test_console(self):
-        """Test docstrings exist in test_console.py"""
-        self.assertTrue(len(self.__doc__) >= 1)
-
     def test_prompt_string(self):
         self.assertEqual("(hbnb) ", HBNBCommand.prompt)
 

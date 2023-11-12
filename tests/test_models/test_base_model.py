@@ -87,14 +87,14 @@ class TestBaseModel(unittest.TestCase):
         file_obj.write(b_json)
 
         # Save the in-memory file obj(file_obj) to disk
-        with open("file_json", "w") as f:
+        with open("tmp.json", "w") as f:
             f.write(file_obj.getvalue())
 
         # test if the file file_json exist after writing
-        self.assertTrue(os.path.exists("file_json"))
+        self.assertTrue(os.path.exists("tmp.json"))
 
         # test if file is not empty
-        file_size = os.path.getsize("file_json")
+        file_size = os.path.getsize("tmp.json")
         self.assertGreater(file_size, 0)
 
 

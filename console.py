@@ -2,7 +2,6 @@
 """command interpreter(console) for AirBnB"""
 
 import cmd
-import re
 from typing import IO
 from models.base_model import BaseModel
 from models.user import User
@@ -196,26 +195,31 @@ class HBNBCommand(cmd.Cmd):
             return
         print("Usage: count <className>")
 
-def default(self, arg):
-        """Default behavior for cmd module when input is invalid"""
-        argdict = {
-            "all": self.do_all,
-            "show": self.do_show,
-            "destroy": self.do_destroy,
-            "count": self.do_count,
-            "update": self.do_update
+    def default(self, line: str):
+        """
+        Default method that executes when a command entered
+        cant find a corresponding function to call or execute
+        """
+        commands = {
+            "create":self.do_create,
+            "show":self.do_show,
+            "destroy":self.do_destroy,
+            "all":self.do_all,
+            "update":self.do_update,
+            "count":self.do_count
         }
-        match = re.search(r"\.", arg)
-        if match is not None:
-            argl = [arg[:match.span()[0]], arg[match.span()[1]:]]
-            match = re.search(r"\((.*?)\)", argl[1])
-            if match is not None:
-                command = [argl[1][:match.span()[0]], match.group()[1:-1]]
-                if command[0] in argdict.keys():
-                    call = "{} {}".format(argl[0], command[1])
-                    return argdict[command[0]](call)
-        print("*** Unknown syntax: {}".format(arg))
-        return False
+        if "." in line and line[-1] == ")":
+            class_name, command = line.split(".")
+            #print(command.split("("))
+            if class_name in classes:
+                if command.split("(")[0] in commands.keys():
+                    comd = command.split("(")[0]
+                    commands[comd](class_name)
+                    return
+                return True
+        return cmd.Cmd.default(self, line)
+
+
 
 
 if __name__ == "__main__":

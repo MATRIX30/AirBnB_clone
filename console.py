@@ -222,7 +222,7 @@ class HBNBCommand(cmd.Cmd):
                     t = command.split("(")
                     print(t)
 
-                    return 
+                    return
                 else:
                     print("")
                     return

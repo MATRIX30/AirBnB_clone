@@ -52,8 +52,10 @@ class BaseModel:
         """
         dict_repr = self.__dict__.copy()
         dict_repr["__class__"] = self.__class__.__name__
-        dict_repr["created_at"] = self.created_at.isoformat(sep="T", timespec="auto")
-        dict_repr["updated_at"] = self.updated_at.isoformat(sep="T", timespec="auto")
+        dict_repr["created_at"] = self.created_at.isoformat(sep="T",
+                                                            timespec="auto")
+        dict_repr["updated_at"] = self.updated_at.isoformat(sep="T",
+                                                            timespec="auto")
         """
         self.__dict__["updated_at"] = self.updated_at.strftime(
             "%Y-%m-%dT%H:%M:%S.%f"

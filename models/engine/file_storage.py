@@ -48,15 +48,15 @@ class FileStorage:
         file (path: __file_path)
         """
 
-        if bool(FileStorage.__objects) and len(FileStorage.__file_path) > 0:
-            # convert each obj of __objects to its dict representation
-            data = {key: obj.to_dict() for key,
-                    obj in FileStorage.__objects.items()}
-            # data = json.dumps(FileStorage.__objects)
-            # converting the data dict to json string and
-            # writing it to __file_path
-            with open(FileStorage.__file_path, "w") as file_handler:
-                json.dump(data, file_handler)
+        #if bool(FileStorage.__objects) and len(FileStorage.__file_path) > 0:
+        # convert each obj of __objects to its dict representation
+        data = {key: obj.to_dict() for key,
+                obj in FileStorage.__objects.items()}
+        # data = json.dumps(FileStorage.__objects)
+        # converting the data dict to json string and
+        # writing it to __file_path
+        with open(FileStorage.__file_path, "w") as file_handler:
+            json.dump(data, file_handler)
 
     def reload(self):
         """

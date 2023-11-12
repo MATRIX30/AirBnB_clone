@@ -215,7 +215,7 @@ class HBNBCommand(cmd.Cmd):
                 if command.split("(")[0] in commands.keys():
                     instruction = command.split("(")[0]
                     commands[instruction](class_name)
-                    return
+                    return True
         return cmd.Cmd.default(self, line)
 
 

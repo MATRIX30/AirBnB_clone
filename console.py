@@ -213,12 +213,10 @@ class HBNBCommand(cmd.Cmd):
             #print(command.split("("))
             if class_name in classes:
                 if command.split("(")[0] in commands.keys():
-                    comd = command.split("(")[0]
-                    commands[comd](class_name)
+                    instruction = command.split("(")[0]
+                    commands[instruction](class_name)
                     return
-                return True
         return cmd.Cmd.default(self, line)
-
 
 
 

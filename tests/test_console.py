@@ -1,20 +1,7 @@
 #!/usr/bin/python3
-"""Defines unittests for console.py.
-
-Unittest classes:
-    TestHBNBCommand_prompting
-    TestHBNBCommand_help
-    TestHBNBCommand_exit
-    TestHBNBCommand_create
-    TestHBNBCommand_show
-    TestHBNBCommand_all
-    TestHBNBCommand_destroy
-    TestHBNBCommand_update
-"""
+"""Test Module for console.py """
 import os
 import console
-import json
-import sys
 import unittest
 from models import storage
 from models.engine.file_storage import FileStorage
@@ -39,19 +26,19 @@ class TestHBNBCommand(unittest.TestCase):
         except FileNotFoundError:
             pass
 
-    def test_prompt_string(self):
+    def test_prompt_str(self):
         self.assertEqual("(hbnb) ", HBNBCommand.prompt)
 
     # testing quit() method
     def test_quit(self):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertTrue(HBNBCommand().onecmd("quit"))
-            
+
     # testing EOF() method
     def test_EOF(self):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertTrue(HBNBCommand().onecmd("EOF"))
-            
+
     # testing show method both <className>.show(<id>) and show()
     def test_show_missing_class(self):
         correct = "** class name missing **"
@@ -61,7 +48,7 @@ class TestHBNBCommand(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(".show()"))
             self.assertEqual(correct, output.getvalue().strip())
-            
+
     # testing destroy method both <className>.destroy(<id>) and destroy()
     def test_destroy(self):
         correct = "** class name missing **"
@@ -81,7 +68,7 @@ class TestHBNBCommand(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("MyModel.all()"))
             self.assertEqual(correct, output.getvalue().strip())
-            
+
     # testing update method both <className>.update(<id>) and update()
     def test_update(self):
         correct = "** class name missing **"
@@ -91,12 +78,13 @@ class TestHBNBCommand(unittest.TestCase):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(".update()"))
             """self.assertEqual(correct, output.getvalue().strip())"""
-            
+
     # testing count method <className>.count()
     def test_count(self):
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("MyModel.count()"))
             """self.assertEqual("0", output.getvalue().strip())"""
+
 
 if __name__ == "__main__":
     unittest.main()

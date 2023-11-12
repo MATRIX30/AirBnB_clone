@@ -36,10 +36,11 @@ class FileStorage:
         Args:
            obj(object_type): the object to be set
         """
-        key = "{:s}.{:s}".format(obj.__class__.__name__, obj.id)
-        # if key in self.__objects.keys():
-        # FileStorage.__objects[key] = obj.to_dict()
-        FileStorage.__objects[key] = obj
+        if (obj):
+            key = "{:s}.{:s}".format(obj.__class__.__name__, obj.id)
+            # if key in self.__objects.keys():
+            # FileStorage.__objects[key] = obj.to_dict()
+            FileStorage.__objects[key] = obj
 
     def save(self):
         """

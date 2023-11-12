@@ -12,6 +12,21 @@ from models.review import Review
 from models.engine.file_storage import FileStorage
 from models import storage
 import ast
+import re
+
+
+def tokenize(arg: str) -> list:
+    """Splits a string into tokens delimited by space
+
+    Args:
+        arg (string): strings to be splitted
+
+    Returns:
+        list: list of strings
+    """
+    token = re.split(r"[ .(),]", arg)
+    return token
+
 
 classes = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
 
@@ -195,41 +210,45 @@ class HBNBCommand(cmd.Cmd):
             return
         print("Usage: count <className>")
 
-    def default(self, line: str):
-        """
-        Default method that executes when a command entered
-        cant find a corresponding function to call or execute
-        """
-        commands = {
-            "create": self.do_create,
+    def default(self, arg):
+        """Default method"""
+
+        func_dict = {
+            "all": self.do_all,
             "show": self.do_show,
             "destroy": self.do_destroy,
-            "all": self.do_all,
-            "update": self.do_update,
             "count": self.do_count,
+            "update": self.do_update,
         }
-        if "." in line and line[-1] == ")":
-            class_name, command = line.split(".")
-            # print(command.split("("))
-            if class_name in classes:
-                instruction = command.split("(")[0]
-                if instruction in commands.keys():
-                    if instruction in ["all", "count"]:
-                        # execute the instruction by calling
-                        # appropriat function
-                        commands[instruction](class_name)
 
-                    t = command.split("(")
-                    print(t)
+        tokens = tokenize(arg)
+        for key in func_dict.keys():
+            # checking for commands to call
+            if key == tokens[1]:
+                # for if args is parentheses eg("something")
+                if tokens[2] != "" and len(tokens) < 6:
+                    # print(tokens)
+                    striped_arg = tokens[2].replace('"', "")
+                    args = f"{tokens[0]} {striped_arg}"
+                    return func_dict[tokens[1]](args)
+                elif len(tokens) > 6:
+                    # for update version 1
+                    # print(tokens)
+                    arg1 = tokens[2].replace('"', "")
+                    arg2 = tokens[4].replace('"', "")
+                    arg3 = tokens[6].replace('"', "")
+                    args = f"{tokens[0]} {arg1} {arg2} {arg3}"
+                    # print(args)
+                    return func_dict[tokens[1]](args)
 
-                    return
                 else:
-                    print("")
-                    return
-            else:
-                print("** class name missing **")
-                return
-        return cmd.Cmd.default(self, line)
+                    # print(tokens)
+                    return func_dict[tokens[1]](tokens[0])
+
+        # print(tokens)
+
+        print("*** Unknown syntax: {}".format(arg))
+        return False
 
 
 if __name__ == "__main__":

@@ -11,7 +11,7 @@ from models.place import Place
 from models.review import Review
 from models.engine.file_storage import FileStorage
 from models import storage
-import ast
+import re
 
 classes = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
 
@@ -195,29 +195,26 @@ class HBNBCommand(cmd.Cmd):
             return
         print("Usage: count <className>")
 
-    def default(self, line: str):
-        """
-        Default method that executes when a command entered
-        cant find a corresponding function to call or execute
-        """
-        commands = {
-            "create":self.do_create,
-            "show":self.do_show,
-            "destroy":self.do_destroy,
-            "all":self.do_all,
-            "update":self.do_update,
-            "count":self.do_count
-        }
-        if "." in line and line[-1] == ")":
-            class_name, command = line.split(".")
-            #print(command.split("("))
-            if class_name in classes:
-                if command.split("(")[0] in commands.keys():
-                    instruction = command.split("(")[0]
-                    commands[instruction](class_name)
-                    return True
-        return cmd.Cmd.default(self, line)
-
+        def default(self, arg):
+            """Default behavior for cmd module when input is invalid"""
+            argdict = {
+                "all": self.do_all,
+                "show": self.do_show,
+                "destroy": self.do_destroy,
+                "count": self.do_count,
+                "update": self.do_update
+            }
+            match = re.search(r"\.", arg)
+            if match is not None:
+                argl = [arg[:match.span()[0]], arg[match.span()[1]:]]
+                match = re.search(r"\((.*?)\)", argl[1])
+                if match is not None:
+                    command = [argl[1][:match.span()[0]], match.group()[1:-1]]
+                    if command[0] in argdict.keys():
+                        call = "{} {}".format(argl[0], command[1])
+                        return argdict[command[0]](call)
+            print("*** Unknown syntax: {}".format(arg))
+            return False
 
 
 if __name__ == "__main__":

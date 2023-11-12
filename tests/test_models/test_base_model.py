@@ -10,6 +10,26 @@ from unittest.mock import patch
 class TestBaseModel(unittest.TestCase):
     """Test class for base model"""
 
+    def test_init(self):
+        # test if when an object is created both created_at and update_at are
+        # not more than 2 secs apart
+        base = BaseModel()
+        self.assertAlmostEqual(
+            base.created_at, base.updated_at, delta=datetime.timedelta(
+                seconds=2)
+        )
+        
+        # testing if 2 base objects should not have same id
+        b1 = BaseModel()
+        b2 = BaseModel()
+        self.assertNotEqual(b1,b2)
+        
+        # test if updated_at attribute changes when object is saved
+        old_date = b1.updated_at
+        b1.save()
+        new_date = b1.updated_at
+        self.assertNotEqual(old_date,new_date)
+        
     def test_id(self):
         """Test cases for public instance id attribute"""
         # assert the id is of str type
@@ -18,13 +38,6 @@ class TestBaseModel(unittest.TestCase):
         # assert two objects won't have same id
         self.assertNotEqual(BaseModel().id, BaseModel().id)
 
-        # test if when an object is created both created_at and update_at are
-        # not more than 2 secs apart
-        base = BaseModel()
-        self.assertAlmostEqual(
-            base.created_at, base.updated_at, delta=datetime.timedelta(
-                seconds=2)
-        )
 
     def test__str__(self):
         """Test __str__ return value"""
@@ -51,11 +64,21 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(dic["__class__"], base.__class__.__name__)
 
         # testing if __class__ key exist in dic
+        
+        # test if to_dict has all attributes like self.__dict__
+        dic1 = base.to_dict()
+        dic2 = base.__dict__
+        dic2["created_at"] = dic2["created_at"].isoformat()
+        dic2["updated_at"] = dic2["updated_at"].isoformat()
+        dic2["__class__"] = 'BaseModel'
+        self.assertDictEqual(dic2,dic1)
 
     def test_create_baseModel_from_dict(self):
         """Testing creation of base model from dict datastructure"""
         pass
-
+    
+    def test_save(self):
+        """Testing if save method works"""
 
 if __name__ == "__main__":
     unittest.main()

@@ -1,22 +1,21 @@
 #!/usr/bin/python3
-"""command interpreter(console) for AirBnB"""
+"""This module contains the console.py module"""
 
-import cmd
-from typing import IO
 from models.base_model import BaseModel
 from models.user import User
+from models.place import Place
+from models.state import State
 from models.city import City
 from models.amenity import Amenity
-from models.place import Place
 from models.review import Review
-from models.engine.file_storage import FileStorage
 from models import storage
-import ast
+import cmd
+import os
 import re
 
 
 def tokenize(arg: str) -> list:
-    """Splits a string into tokens delimited by space
+    """ Splits a string into tokens delimited by space
 
     Args:
         arg (string): strings to be splitted
@@ -28,187 +27,24 @@ def tokenize(arg: str) -> list:
     return token
 
 
-classes = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
-
-
 class HBNBCommand(cmd.Cmd):
-    """main console class"""
+    """The class HBNB that builds a console"""
 
     prompt = "(hbnb) "
+    CLASSNAMES = {
+        "BaseModel",
+        "User",
+        "State",
+        "City",
+        "Place",
+        "Amenity",
+        "Review"
+    }
 
-    def do_quit(self, command):
+    def do_quit(self, arg: str) -> bool:
         """Quit command to exit the program"""
+
         return True
-
-    def do_EOF(self, command):
-        """EOF command to exit the program when
-        an end of file(EOF) character is reached
-        """
-        print("")
-        return True
-
-    def emptyline(self):
-        """called when the user enters nothing and hits enter"""
-        return ""
-
-    def postloop(self):
-        """called  when the loop stops"""
-        return
-
-    def do_create(self, line: str):
-        """Creates a new instance of a class"""
-        args = []
-        args = line.split()
-        if not args:
-            print("** class name missing **")
-            return
-        if args[0] not in classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = eval(args[0])()
-        new_instance.save()
-        print(new_instance.id)
-
-    def do_show(self, line: str):
-        """
-        prints the string representation of and instance
-        base on the class name and id
-        """
-        args = []
-        args = line.split()
-        if not args:
-            print("** class name missing **")
-            return
-        if args[0] not in classes:
-            print("** class doesn't exist **")
-            return
-        if len(args) == 1:
-            print("** instance id missing **")
-            return
-
-        all_objects = storage.all()
-        for key in all_objects.keys():
-            class_name, id = key.split(".")
-            if args[0] == class_name and args[1] == id:
-                print(all_objects[key])
-                return
-        print("** no instance found **")
-
-    def do_destroy(self, line: str):
-        """
-        Deletes an instance based on the class name and
-        id (save the change into the JSON file)
-        """
-        args = []
-        args = line.split()
-        if not args:
-            print("** class name missing **")
-            return
-        if args[0] not in classes:
-            print("** class doesn't exist **")
-            return
-        if len(args) == 1:
-            print("** instance id missing **")
-            return
-
-        all_objects = storage.all()
-        for key in all_objects.keys():
-            class_name, id = key.split(".")
-            if args[0] == class_name and args[1] == id:
-                del all_objects[key]
-                storage.save()
-                return
-        print("** no instance found **")
-
-    def do_all(self, line: str):
-        """
-        Prints all string representation of all
-        instances based or not on the class name.
-        """
-        args = []
-        args = line.split()
-        all_objects = storage.all()
-        if not args:
-            for key in all_objects.keys():
-                print(all_objects[key])
-        else:
-            # elimintate any duplicate class name
-            args = set(args)
-            args = list(args)
-            for arg in args:
-                if arg not in classes:
-                    print("** class doesn't exist **")
-                    return
-                for key in all_objects.keys():
-                    class_name, id = key.split(".")
-                    if class_name == arg:
-                        print(all_objects[key])
-
-    def do_update(self, line):
-        """
-        Updates an instance based on the class name and id by adding or
-        updating attribute (save the change into the JSON file)
-
-        Usage: update <class name> <id> <attribute name> "<attribute value>"
-        """
-        args = []
-        args = line.split()
-        if not args:
-            print("** class name missing **")
-            return
-        if args[0] not in classes:
-            print("** class doesn't exist **")
-            return
-        if len(args) == 1:
-            print("** instance id missing **")
-            return
-        key = ".".join([args[0], args[1]])
-        all_objects = storage.all()
-        if key not in all_objects.keys():
-            print("** no instance found **")
-            return
-        if len(args) == 2:
-            print("** attribute name missing **")
-            return
-        selected_instance = all_objects[key]
-
-        if args[2] not in selected_instance.to_dict().keys():
-            print("** value missing **")
-            return
-        if len(args) > 4:
-            args = args[:4]
-
-        if args[2] in ["created_at", "id"]:
-            return
-
-        # determine the datatype of the  value and do casting
-        try:
-            arg_type = type(selected_instance.__dict__[args[2]])
-            print(type(args[3]))
-            args[3] = arg_type(args[3])
-            print(type(args[3]))
-        except Exception:
-            print("fail to update value")
-            return
-        setattr(selected_instance, args[2], args[3])
-        storage.save()
-
-    def do_count(self, line: str):
-        """
-        counts the number of instances of a class
-        Usage: count <className> or <className>.count()
-        """
-        args = []
-        args = line.split()
-        count = 0
-        all_objs = storage.all()
-        if bool(args) and len(args) == 1:
-            for obj_id in all_objs.keys():
-                if args[0] == obj_id.split(".")[0]:
-                    count += 1
-            print(count)
-            return
-        print("Usage: count <className>")
 
     def default(self, arg):
         """Default method"""
@@ -218,7 +54,7 @@ class HBNBCommand(cmd.Cmd):
             "show": self.do_show,
             "destroy": self.do_destroy,
             "count": self.do_count,
-            "update": self.do_update,
+            "update": self.do_update
         }
 
         tokens = tokenize(arg)
@@ -228,15 +64,15 @@ class HBNBCommand(cmd.Cmd):
                 # for if args is parentheses eg("something")
                 if tokens[2] != "" and len(tokens) < 6:
                     # print(tokens)
-                    striped_arg = tokens[2].replace('"', "")
+                    striped_arg = tokens[2].replace('"', '')
                     args = f"{tokens[0]} {striped_arg}"
                     return func_dict[tokens[1]](args)
                 elif len(tokens) > 6:
                     # for update version 1
                     # print(tokens)
-                    arg1 = tokens[2].replace('"', "")
-                    arg2 = tokens[4].replace('"', "")
-                    arg3 = tokens[6].replace('"', "")
+                    arg1 = tokens[2].replace('"', '')
+                    arg2 = tokens[4].replace('"', '')
+                    arg3 = tokens[6].replace('"', '')
                     args = f"{tokens[0]} {arg1} {arg2} {arg3}"
                     # print(args)
                     return func_dict[tokens[1]](args)
@@ -250,6 +86,150 @@ class HBNBCommand(cmd.Cmd):
         print("*** Unknown syntax: {}".format(arg))
         return False
 
+    def do_create(self, arg: str) -> None:
+        """Creates a new instance"""
 
-if __name__ == "__main__":
+        tokens = tokenize(arg)
+        if arg == "":
+            print("** class name missing **")
+        elif tokens[0] not in HBNBCommand.CLASSNAMES:
+            print("** class doesn't exist **")
+        else:
+            print(eval(tokens[0])().id)
+            storage.save()
+
+    def do_clear(self, args: str) -> None:
+        """Clear the screen"""
+        if os.name == 'nt':
+            os.system('cls')
+        else:
+            os.system('clear')
+
+    def do_show(self, arg: str) -> None:
+        """prints the string representation of an instance"""
+
+        tokens = tokenize(arg)
+        if arg == "":
+            print("** class name missing **")
+        elif tokens[0] not in HBNBCommand.CLASSNAMES:
+            print("** class doesn't exist **")
+        elif len(tokens) < 2:
+            print("** instance id missing **")
+        else:
+            key = "{}.{}".format(tokens[0], tokens[1])
+            if key not in storage.all():
+                print("** no instance found **")
+            else:
+                print(storage.all()[key])
+
+    def do_destroy(self, arg: str) -> None:
+        """Deletes an instance based on the class name and id"""
+
+        tokens = tokenize(arg)
+        if arg == "":
+            print("** class name missing **")
+        elif tokens[0] not in HBNBCommand.CLASSNAMES:
+            print("** class doesn't exist **")
+        elif len(tokens) < 2:
+            print("** instance id missing **")
+        else:
+            key = "{}.{}".format(tokens[0], tokens[1])
+            if key not in storage.all():
+                print("** no instance found **")
+            else:
+                del storage.all()[key]
+                storage.save()
+
+    def do_all(self, arg: str) -> None:
+        """Prints all string representation of all instances"""
+
+        tokens = tokenize(arg)
+        if arg == "":
+            print([str(value) for value in storage.all().values()])
+        elif tokens[0] not in HBNBCommand.CLASSNAMES:
+            print("** class doesn't exist **")
+        else:
+            temp = [str(v) for k, v in storage.all().items()
+                    if tokens[0] in k]
+            print(temp)
+
+    def do_update(self, arg: str) -> None:
+        """ Updates the class"""
+        tokens = tokenize(arg)
+        object_json = storage.all()
+        if arg == "":
+            # print(tokens)
+            print("** class name missing **")
+            return False
+        elif tokens[0] not in HBNBCommand.CLASSNAMES:
+            # print(tokens)
+            print("** class doesn't exist **")
+            return False
+        elif len(tokens) < 2:
+            # print(tokens)
+            print("** instance id missing **")
+            return False
+
+        elif f"{tokens[0]}.{tokens[1]}" not in object_json.keys():
+            # print(tokens)
+            print("** no instance found **")
+            return False
+        elif len(tokens) < 3:
+            # print(tokens)
+            print("** attribute name missing **")
+            return False
+        elif len(tokens) == 3:
+            try:
+                type(eval(tokens[2])) != dict
+            except NameError:
+                # print(tokens)
+                print("** value missing **")
+                return False
+
+        if len(tokens) > 3:
+            obj = object_json[f"{tokens[0]}.{tokens[1]}"]
+            if tokens[2] in obj.__class__.__dict__.keys():
+                # get the attribute value type for typecast
+                val_type = type(obj.__class__.__dict__[tokens[2]])
+                obj.__dict__[tokens[2]] = val_type(tokens[3])
+            else:
+                obj.__dict__[tokens[2]] = tokens[3]
+
+        elif type(eval(tokens[2])) == dict:
+            obj = object_json[f"{tokens[0]}.{tokens[1]}"]
+            for k, v in eval(tokens[2]).items():
+                if (k in obj.__class__.__dict__.keys() and
+                        type(obj.__class__.__dict__[k]) in [str, int, float]):
+                    val_type = type(obj.__class__.__dict__[k])
+                    obj.__dict__[k] = val_type(v)
+                else:
+                    obj.__dict__[k] = v
+
+        storage.save()
+
+    def do_count(self, arg):
+        """counts"""
+
+        tokens = tokenize(arg)
+        # set counter
+        count = 0
+        # get all object keys
+        object_keys = storage.all().keys()
+        for key in object_keys:
+            if tokens[0] in key:
+                count += 1
+        print(count)
+
+    def do_EOF(self, arg):
+        """Handles EOF"""
+
+        raise systemExit
+
+    def emptyline(self):
+        """This doesnt do anything when the no command is passed"""
+
+        pass
+
+
+if __name__ == '__main__':
     HBNBCommand().cmdloop()

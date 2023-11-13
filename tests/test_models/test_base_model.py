@@ -3,9 +3,11 @@
 import unittest
 import datetime
 from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
 from io import StringIO
 import json
 import os
+import models
 from unittest.mock import patch
 
 
@@ -85,6 +87,10 @@ class TestBaseModel(unittest.TestCase):
         b_json = json.dumps(b_dic)
         file_obj = StringIO()
         file_obj.write(b_json)
+        
+        models.storage.new(b)
+
+        models.storage.save()
 
         # Save the in-memory file obj(file_obj) to disk
         with open("tmp.json", "w") as f:

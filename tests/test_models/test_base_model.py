@@ -87,9 +87,7 @@ class TestBaseModel(unittest.TestCase):
         b_json = json.dumps(b_dic)
         file_obj = StringIO()
         file_obj.write(b_json)
-        
         models.storage.new(b)
-
         models.storage.save()
 
         # Save the in-memory file obj(file_obj) to disk

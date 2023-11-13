@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/user1r/bin/python3
 """Test module for file storage class
 """
 import os
@@ -7,6 +7,7 @@ import unittest
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models.user import User
+from models.amenity import Amenity
 
 
 class TestFileStorage(unittest.TestCase):
@@ -45,14 +46,14 @@ class TestFileStorage(unittest.TestCase):
             models.storage.new(BaseModel(), 1)
 
     def test_save(self):
-        us = User()
-        models.storage.new(us)
+        user1 = User()
+        models.storage.new(user1)
 
         models.storage.save()
         save_text = ""
         with open("file.json", "r") as file:
             text = file.read()
-            self.assertIn("User." + us.id, text)
+            self.assertIn("User." + user1.id, text)
 
     def test_reload(self):
         """

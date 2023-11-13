@@ -47,7 +47,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(".show()"))
-            self.assertNotEqual(correct, output.getvalue().strip())
+            self.assertEqual(correct, output.getvalue().strip())
 
     # testing destroy method both <className>.destroy(<id>) and destroy()
     def test_destroy(self):
@@ -57,7 +57,7 @@ class TestHBNBCommand(unittest.TestCase):
             self.assertEqual(correct, output.getvalue().strip())
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(".destroy()"))
-            self.assertNotEqual(correct, output.getvalue().strip())
+            self.assertEqual(correct, output.getvalue().strip())
 
     # testing all method <className>.all()
     def test_all(self):

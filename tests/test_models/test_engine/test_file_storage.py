@@ -22,5 +22,6 @@ class TestFileStorage(unittest.TestCase):
     def test_FileStorage_instantiation_no_args(self):
         self.assertEqual(type(FileStorage()), FileStorage)
 
+
 if __name__ == "__main__":
     unittest.main()

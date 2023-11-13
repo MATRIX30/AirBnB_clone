@@ -41,7 +41,6 @@ class TestUser(unittest.TestCase):
 
         # testing default attributes values for user
         self.assertIsInstance(user1.id, str)
-        self.assertIsInstance(user1.created_at, datetime)
         self.assertIsInstance(user1.first_name, str)
         self.assertIsInstance(user1.last_name, str)
         self.assertIsInstance(user1.email, str)

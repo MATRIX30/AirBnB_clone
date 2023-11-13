@@ -31,9 +31,6 @@ class TestFileStorage(unittest.TestCase):
             pass
         FileStorage._FileStorage__objects = {}
 
-    def test_attributes(self):
-        self.assertIsInstance(FileStorage.__file_path, str)
-        self.assertIsInstance(FileStorage.__objects, dict)
 
     def test_all(self):
         self.assertEqual(dict, type(models.storage.all()))

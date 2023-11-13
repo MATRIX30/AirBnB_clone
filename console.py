@@ -171,9 +171,7 @@ class HBNBCommand(cmd.Cmd):
         # determine the datatype of the  value and do casting
         try:
             arg_type = type(selected_instance.__dict__[args[2]])
-            print(type(args[3]))
             args[3] = arg_type(args[3])
-            print(type(args[3]))
         except Exception:
             print("fail to update value")
             return

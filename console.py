@@ -209,25 +209,18 @@ class HBNBCommand(cmd.Cmd):
             "update": self.do_update,
             "count": self.do_count,
         }
-        if "." in line and line[-1] == ")":
-            class_name, command = line.split(".")
-            # print(command.split("("))
-            if class_name in classes:
-                instruction = command.split("(")[0]
-                if instruction in commands.keys():
-                    if instruction in ["all", "count"]:
-                        # execute the instruction by calling
-                        # appropriat function
-                        commands[instruction](class_name)
+        dot = re.search(r"\.", line)
+        if dot is not None:
+            instruction = [line[: dot.span()[0]], line[dot.span()[1]:]]
+            bracket = re.search(r"\((.*?)\)", instruction[1])
+            if bracket is not None:
+                cmd = [instruction[1][: bracket.span()[0]],
+                       bracket.group()[1:-1]]
 
-                    return
-                else:
-                    print("")
-                    return
-            else:
-                print("** class doesn't exist **")
-                return
-        return cmd.Cmd.default(self, line)
+                if cmd[0] in commands.keys():
+                    return commands[cmd[0]](f"{instruction[0]} {cmd[1]}")
+        print(f"*** Unknown syntax: {line}")
+        return False
 
 
 if __name__ == "__main__":

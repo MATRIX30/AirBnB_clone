@@ -10,9 +10,10 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
+from models.state import State
 from models.engine.file_storage import FileStorage
 from models import storage
-from models import state
+
 
 classes = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
 

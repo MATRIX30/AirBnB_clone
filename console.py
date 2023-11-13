@@ -196,7 +196,7 @@ class HBNBCommand(cmd.Cmd):
             return
         print("Usage: count <className>")
 
-def default(self, line: str):
+    def default(self, line: str):
         """
         Default method that executes when a command entered
         cant find a corresponding function to call or execute
@@ -228,7 +228,6 @@ def default(self, line: str):
                 print("** class doesn't exist **")
                 return
         return cmd.Cmd.default(self, line)
-
 
 
 if __name__ == "__main__":

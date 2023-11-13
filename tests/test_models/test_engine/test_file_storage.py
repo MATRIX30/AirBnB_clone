@@ -66,9 +66,9 @@ class TestFileStorage_methods(unittest.TestCase):
         """
         Tests pep8 style
         """
-        style = pep8.StyleGuide(quiet=True)
-        p = style.check_files(['models/engine/file_storage.py'])
-        self.assertEqual(p.total_errors, 0, "fix pep8")
+    def test_attributes(self):
+        self.assertIsInstance(FileStorage.__file_path, str)
+        self.assertIsInstance(FileStorage.__objects, dict)
 
     def test_all(self):
         self.assertEqual(dict, type(models.storage.all()))

@@ -197,37 +197,37 @@ class HBNBCommand(cmd.Cmd):
         print("Usage: count <className>")
 
     def default(self, line: str):
-            """
-            Default method that executes when a command entered
-            cant find a corresponding function to call or execute
-            """
-            commands = {
-                "create": self.do_create,
-                "show": self.do_show,
-                "destroy": self.do_destroy,
-                "all": self.do_all,
-                "update": self.do_update,
-                "count": self.do_count,
-            }
-            if "." in line and line[-1] == ")":
-                class_name, command = line.split(".")
-                # print(command.split("("))
-                if class_name in classes:
-                    instruction = command.split("(")[0]
-                    if instruction in commands.keys():
-                        if instruction in ["all", "count"]:
-                            # execute the instruction by calling
-                            # appropriat function
-                            commands[instruction](class_name)
+        """
+        Default method that executes when a command entered
+        cant find a corresponding function to call or execute
+        """
+        commands = {
+            "create": self.do_create,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "all": self.do_all,
+            "update": self.do_update,
+            "count": self.do_count,
+        }
+        if "." in line and line[-1] == ")":
+            class_name, command = line.split(".")
+            # print(command.split("("))
+            if class_name in classes:
+                instruction = command.split("(")[0]
+                if instruction in commands.keys():
+                    if instruction in ["all", "count"]:
+                        # execute the instruction by calling
+                        # appropriat function
+                        commands[instruction](class_name)
 
-                        return
-                    else:
-                        print("")
-                        return
-                else:
-                    print("** class doesn't exist **")
                     return
-            return cmd.Cmd.default(self, line)
+                else:
+                    print("")
+                    return
+            else:
+                print("** class doesn't exist **")
+                return
+        return cmd.Cmd.default(self, line)
 
 
 

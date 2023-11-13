@@ -41,3 +41,7 @@ class TestState(unittest.TestCase):
         # test if user attribute can be created from kwarg
         s1 = State(country="Cameroon")
         self.assertEqual(s1.country, "Cameroon")
+
+
+if __name__ == "__main__":
+    unittest.main()

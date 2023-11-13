@@ -12,26 +12,10 @@ from models.place import Place
 from models.review import Review
 from models.engine.file_storage import FileStorage
 from models import storage
-from shlex import split
+
 
 classes = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
 
-def parse(arg):
-    curly_braces = re.search(r"\{(.*?)\}", arg)
-    brackets = re.search(r"\[(.*?)\]", arg)
-    if curly_braces is None:
-        if brackets is None:
-            return [i.strip(",") for i in split(arg)]
-        else:
-            lexer = split(arg[:brackets.span()[0]])
-            retl = [i.strip(",") for i in lexer]
-            retl.append(brackets.group())
-            return retl
-    else:
-        lexer = split(arg[:curly_braces.span()[0]])
-        retl = [i.strip(",") for i in lexer]
-        retl.append(curly_braces.group())
-        return retl
 
 class HBNBCommand(cmd.Cmd):
     """main console class"""
@@ -146,55 +130,54 @@ class HBNBCommand(cmd.Cmd):
                     if class_name == arg:
                         print(all_objects[key])
 
-    def do_update(self, arg):
-        """Usage: update <class> <id> <attribute_name> <attribute_value> or
-       <class>.update(<id>, <attribute_name>, <attribute_value>) or
-       <class>.update(<id>, <dictionary>)
-        Update a class instance of a given id by adding or updating
-        a given attribute key/value pair or dictionary."""
-        argl = parse(arg)
-        objdict = storage.all()
+    def do_update(self, line):
+        """
+        Updates an instance based on the class name and id by adding or
+        updating attribute (save the change into the JSON file)
 
-        if len(argl) == 0:
+        Usage: update <class name> <id> <attribute name> "<attribute value>"
+        """
+        args = []
+        args = line.split()
+        if not args:
             print("** class name missing **")
-            return False
-        if argl[0] not in HBNBCommand.__classes:
+            return
+        if args[0] not in classes:
             print("** class doesn't exist **")
-            return False
-        if len(argl) == 1:
+            return
+        if len(args) == 1:
             print("** instance id missing **")
-            return False
-        if "{}.{}".format(argl[0], argl[1]) not in objdict.keys():
+            return
+        key = ".".join([args[0], args[1]])
+        all_objects = storage.all()
+        if key not in all_objects.keys():
             print("** no instance found **")
-            return False
-        if len(argl) == 2:
+            return
+        if len(args) == 2:
             print("** attribute name missing **")
-            return False
-        if len(argl) == 3:
-            try:
-                type(eval(argl[2])) != dict
-            except NameError:
-                print("** value missing **")
-                return False
+            return
+        selected_instance = all_objects[key]
 
-        if len(argl) == 4:
-            obj = objdict["{}.{}".format(argl[0], argl[1])]
-            if argl[2] in obj.__class__.__dict__.keys():
-                valtype = type(obj.__class__.__dict__[argl[2]])
-                obj.__dict__[argl[2]] = valtype(argl[3])
-            else:
-                obj.__dict__[argl[2]] = argl[3]
-        elif type(eval(argl[2])) == dict:
-            obj = objdict["{}.{}".format(argl[0], argl[1])]
-            for k, v in eval(argl[2]).items():
-                if (k in obj.__class__.__dict__.keys() and
-                        type(obj.__class__.__dict__[k]) in {str, int, float}):
-                    valtype = type(obj.__class__.__dict__[k])
-                    obj.__dict__[k] = valtype(v)
-                else:
-                    obj.__dict__[k] = v
+        if args[2] not in selected_instance.to_dict().keys():
+            print("** value missing **")
+            return
+        if len(args) > 4:
+            args = args[:4]
+
+        if args[2] in ["created_at", "id"]:
+            return
+
+        # determine the datatype of the  value and do casting
+        try:
+            arg_type = type(selected_instance.__dict__[args[2]])
+            print(type(args[3]))
+            args[3] = arg_type(args[3])
+            print(type(args[3]))
+        except Exception:
+            print("fail to update value")
+            return
+        setattr(selected_instance, args[2], args[3])
         storage.save()
-
 
     def do_count(self, line: str):
         """
@@ -214,30 +197,38 @@ class HBNBCommand(cmd.Cmd):
         print("Usage: count <className>")
 
     def default(self, line: str):
-        """
-        Default method that executes when a command entered
-        cant find a corresponding function to call or execute
-        """
-        commands = {
-            "create": self.do_create,
-            "show": self.do_show,
-            "destroy": self.do_destroy,
-            "all": self.do_all,
-            "update": self.do_update,
-            "count": self.do_count,
-        }
-        dot = re.search(r"\.", line)
-        if dot is not None:
-            instruction = [line[: dot.span()[0]], line[dot.span()[1]:]]
-            bracket = re.search(r"\((.*?)\)", instruction[1])
-            if bracket is not None:
-                cmd = [instruction[1][: bracket.span()[0]],
-                       bracket.group()[1:-1]]
+            """
+            Default method that executes when a command entered
+            cant find a corresponding function to call or execute
+            """
+            commands = {
+                "create": self.do_create,
+                "show": self.do_show,
+                "destroy": self.do_destroy,
+                "all": self.do_all,
+                "update": self.do_update,
+                "count": self.do_count,
+            }
+            if "." in line and line[-1] == ")":
+                class_name, command = line.split(".")
+                # print(command.split("("))
+                if class_name in classes:
+                    instruction = command.split("(")[0]
+                    if instruction in commands.keys():
+                        if instruction in ["all", "count"]:
+                            # execute the instruction by calling
+                            # appropriat function
+                            commands[instruction](class_name)
 
-                if cmd[0] in commands.keys():
-                    return commands[cmd[0]](f"{instruction[0]} {cmd[1]}")
-        print(f"*** Unknown syntax: {line}")
-        return False
+                        return
+                    else:
+                        print("")
+                        return
+                else:
+                    print("** class doesn't exist **")
+                    return
+            return cmd.Cmd.default(self, line)
+
 
 
 if __name__ == "__main__":

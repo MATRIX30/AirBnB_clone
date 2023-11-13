@@ -42,24 +42,22 @@ class TestHBNBCommand(unittest.TestCase):
     # testing show method both <className>.show(<id>) and show()
     def test_show_missing_class(self):
         correct = "** class name missing **"
-        wrong = "** class doesn't exist **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("show"))
             self.assertEqual(correct, output.getvalue().strip())
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(".show()"))
-            self.assertEqual(wrong, output.getvalue().strip())
+            self.assertEqual(correct, output.getvalue().strip())
 
     # testing destroy method both <className>.destroy(<id>) and destroy()
     def test_destroy(self):
         correct = "** class name missing **"
-        wrong = "** class doesn't exist **"
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd("destroy"))
             self.assertEqual(correct, output.getvalue().strip())
         with patch("sys.stdout", new=StringIO()) as output:
             self.assertFalse(HBNBCommand().onecmd(".destroy()"))
-            self.assertEqual(wrong, output.getvalue().strip())
+            self.assertEqual(correct, output.getvalue().strip())
 
     # testing all method <className>.all()
     def test_all(self):

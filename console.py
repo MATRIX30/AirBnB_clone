@@ -20,22 +20,22 @@ classes = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
 
 
 def line_split(arg):
-    curly_braces = re.search(r"\{(.*?)\}", arg)
-    brackets = re.search(r"\[(.*?)\]", arg)
-    if curly_braces is None:
-        if brackets is None:
+    curl_brace = re.search(r"\{(.*?)\}", arg)
+    square_brace = re.search(r"\[(.*?)\]", arg)
+    if curl_brace is None:
+        if square_brace is None:
             # print([i.strip(",") for i in split(arg)])
-            return [i.strip(",") for i in split(arg)]
+            return [item.strip(",") for item in split(arg)]
         else:
-            lexer = split(arg[: brackets.span()[0]])
-            retl = [i.strip(",") for i in lexer]
-            retl.append(brackets.group())
-            return retl
+            pattern = split(arg[: square_brace.span()[0]])
+            res = [item.strip(",") for item in pattern]
+            res.append(square_brace.group())
+            return res
     else:
-        lexer = split(arg[: curly_braces.span()[0]])
-        retl = [i.strip(",") for i in lexer]
-        retl.append(curly_braces.group())
-        return retl
+        pattern = split(arg[: curl_brace.span()[0]])
+        res = [i.strip(",") for i in pattern]
+        res.append(curl_brace.group())
+        return res
 
 
 class HBNBCommand(cmd.Cmd):
@@ -132,7 +132,6 @@ class HBNBCommand(cmd.Cmd):
         Prints all string representation of all
         instances based or not on the class name.
         """
-
         args = line.split()
         all_objects = storage.all()
         objs = []
@@ -226,30 +225,30 @@ class HBNBCommand(cmd.Cmd):
             return
         print("Usage: count <className>")
 
-
-def default(self, line: str):
-    """
-    Default method that executes when a command entered
-    cant find a corresponding function to call or execute
-    """
-    commands = {
-        "create": self.do_create,
-        "show": self.do_show,
-        "destroy": self.do_destroy,
-        "all": self.do_all,
-        "update": self.do_update,
-        "count": self.do_count,
-    }
-    dot = re.search(r"\.", line)
-    if dot is not None:
-        instruction = [line[: dot.span()[0]], line[dot.span()[1]:]]
-        bracket = re.search(r"\((.*?)\)", instruction[1])
-        if bracket is not None:
-            cmd = [instruction[1][: bracket.span()[0]], bracket.group()[1:-1]]
-            if cmd[0] in commands.keys():
-                return commands[cmd[0]](f"{instruction[0]} {cmd[1]}")
-    print(f"*** Unknown syntax: {line}")
-    return False
+    def default(self, line: str):
+        """
+        Default method that executes when a command entered
+        cant find a corresponding function to call or execute
+        """
+        commands = {
+            "create": self.do_create,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "all": self.do_all,
+            "update": self.do_update,
+            "count": self.do_count,
+        }
+        dot = re.search(r"\.", line)
+        if dot is not None:
+            instruction = [line[: dot.span()[0]], line[dot.span()[1]:]]
+            bracket = re.search(r"\((.*?)\)", instruction[1])
+            if bracket is not None:
+                cmd = [instruction[1][: bracket.span()[0]],
+                       bracket.group()[1:-1]]
+                if cmd[0] in commands.keys():
+                    return commands[cmd[0]](f"{instruction[0]} {cmd[1]}")
+        print(f"*** Unknown syntax: {line}")
+        return False
 
 
 if __name__ == "__main__":

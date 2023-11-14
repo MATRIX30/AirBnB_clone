@@ -11,6 +11,7 @@ import models
 from unittest.mock import patch
 from time import sleep
 
+
 class TestBaseModel(unittest.TestCase):
     """Test class for base model"""
 
@@ -100,7 +101,7 @@ class TestBaseModel(unittest.TestCase):
         # test if file is not empty
         file_size = os.path.getsize("tmp.json")
         self.assertGreater(file_size, 0)
-        
+
     def test_base_save(self):
         # test update attribute if it changes after save
         b = BaseModel()
@@ -108,16 +109,14 @@ class TestBaseModel(unittest.TestCase):
         sleep(1)
         b.save()
         self.assertLess(first_update, b.updated_at)
-        
+
     def test_save_updates_file(self):
         bm = BaseModel()
         bm.save()
         bmid = "BaseModel." + bm.id
         with open("file.json", "r") as f:
             self.assertIn(bmid, f.read())
-        
-        
-        
+
 
 if __name__ == "__main__":
     unittest.main()

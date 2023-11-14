@@ -9,7 +9,7 @@ import json
 import os
 import models
 from unittest.mock import patch
-
+from time import sleep
 
 class TestBaseModel(unittest.TestCase):
     """Test class for base model"""
@@ -100,7 +100,15 @@ class TestBaseModel(unittest.TestCase):
         # test if file is not empty
         file_size = os.path.getsize("tmp.json")
         self.assertGreater(file_size, 0)
-
+        
+    def test_base_save(self):
+        b = BaseModel()
+        first_update = b.updated_at
+        sleep(1)
+        b.save()
+        self.assertLess(first_update, b.updated_at)
+        
+        
 
 if __name__ == "__main__":
     unittest.main()

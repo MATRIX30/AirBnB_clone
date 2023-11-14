@@ -28,11 +28,13 @@ class TestFileStorage(unittest.TestCase):
         
     def test_file_obj(self):
         """ Test for file object"""
+        storage = FileStorage()
         # test if attribute is private
         self.assertEqual(type(FileStorage()), FileStorage)
         with self.assertRaises(AttributeError):
             FileStorage.__file_path
         #self.assertRaises(FileStorage.__file_path, AttributeError)
+        self.assertEqual(storage.all(),{})
         
         
     def test_file_file_path(self):
@@ -42,6 +44,8 @@ class TestFileStorage(unittest.TestCase):
     def test_save(self):
         """Test for save  method"""
         base = BaseModel()
+        # assert the method save exist
+        self.assertIn("save",FileStorage.__dict__)
         
 
     
@@ -60,8 +64,8 @@ class TestFileStorage(unittest.TestCase):
     
     def test_reload(self):
         """Test for reload method"""
-        pass
-
+        # assert the method save exist
+        self.assertIn("reload",FileStorage.__dict__)
 
 if __name__ == "__main__":
     unittest.main()

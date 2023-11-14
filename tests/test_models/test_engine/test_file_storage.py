@@ -36,12 +36,13 @@ class TestFileStorage(unittest.TestCase):
         
         
     def test_file_file_path(self):
-        """ Test for file_paht"""
+        """ Test for file_path"""
         pass
     
     def test_save(self):
         """Test for save  method"""
         base = BaseModel()
+        
 
     
     def test_all(self):
@@ -52,7 +53,10 @@ class TestFileStorage(unittest.TestCase):
     
     def test_new(self):
         """Test for save method"""
-        pass
+        base = BaseModel()
+        storage = FileStorage()
+        storage.new(base)
+        self.assertIn("BaseModel."+base.id,storage.all().keys())
     
     def test_reload(self):
         """Test for reload method"""

@@ -102,11 +102,20 @@ class TestBaseModel(unittest.TestCase):
         self.assertGreater(file_size, 0)
         
     def test_base_save(self):
+        # test update attribute if it changes after save
         b = BaseModel()
         first_update = b.updated_at
         sleep(1)
         b.save()
         self.assertLess(first_update, b.updated_at)
+        
+    def test_save_updates_file(self):
+        bm = BaseModel()
+        bm.save()
+        bmid = "BaseModel." + bm.id
+        with open("file.json", "r") as f:
+            self.assertIn(bmid, f.read())
+        
         
         
 

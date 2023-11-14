@@ -46,7 +46,8 @@ class TestFileStorage(unittest.TestCase):
         """Test for all method"""
         # test if it returns dictionary object
         storage = FileStorage()
-        self.assertEqual(dict,type(storage.all()))
+        
+        self.assertEqual(dict,type(FileStorage.all(storage)))
     
     def test_new(self):
         """Test for save method"""

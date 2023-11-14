@@ -22,7 +22,7 @@ For this project, we expect you to look at these concepts:
 - [Python packages](https://intranet.alxswe.com/concepts/66)
 - [AirBnB clone](https://intranet.alxswe.com/concepts/66)
 
-![AirBnB_image](https://s3.amazonaws.com/alx-intranet.hbtn.io/uploads/medias/2018/6/65f4a1dd9c51265f49d0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20231111%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231111T014150Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=14a5245473052e0863fc0fd00184285e42d2b3909829e1b1fb0228e4fc1d754c)
+![AirBnB_image](./img/img.png)
 
 ### Background Context
 

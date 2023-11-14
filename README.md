@@ -1,5 +1,6 @@
 
-# ✈️ Description of AirBnB Console Project
+# Part One: AirBnB Console
+## ✈️ Description of AirBnB Console Project
 
 ## 0x00. AirBnB clone - The console
 

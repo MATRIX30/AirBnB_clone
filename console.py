@@ -3,6 +3,7 @@
 
 import cmd
 import re
+from shlex import split
 from typing import IO
 from models.base_model import BaseModel
 from models.user import User
@@ -16,6 +17,25 @@ from models import storage
 
 
 classes = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
+
+
+def line_split(arg):
+    curly_braces = re.search(r"\{(.*?)\}", arg)
+    brackets = re.search(r"\[(.*?)\]", arg)
+    if curly_braces is None:
+        if brackets is None:
+            # print([i.strip(",") for i in split(arg)])
+            return [i.strip(",") for i in split(arg)]
+        else:
+            lexer = split(arg[: brackets.span()[0]])
+            retl = [i.strip(",") for i in lexer]
+            retl.append(brackets.group())
+            return retl
+    else:
+        lexer = split(arg[: curly_braces.span()[0]])
+        retl = [i.strip(",") for i in lexer]
+        retl.append(curly_braces.group())
+        return retl
 
 
 class HBNBCommand(cmd.Cmd):
@@ -112,12 +132,15 @@ class HBNBCommand(cmd.Cmd):
         Prints all string representation of all
         instances based or not on the class name.
         """
-        args = []
+
         args = line.split()
         all_objects = storage.all()
+        objs = []
         if not args:
+            # print([str(value) for value in all_objects.values()])
             for key in all_objects.keys():
-                print(all_objects[key])
+                objs.append(str(all_objects[key]))
+                # print([str(all_objects[key])])
         else:
             # elimintate any duplicate class name
             args = set(args)
@@ -129,7 +152,9 @@ class HBNBCommand(cmd.Cmd):
                 for key in all_objects.keys():
                     class_name, id = key.split(".")
                     if class_name == arg:
-                        print(all_objects[key])
+                        # print(all_objects[key])
+                        objs.append(str(all_objects[key]))
+        print(objs)
 
     def do_update(self, line):
         """
@@ -139,7 +164,9 @@ class HBNBCommand(cmd.Cmd):
         Usage: update <class name> <id> <attribute name> "<attribute value>"
         """
         args = []
-        args = line.split()
+        # ar = []
+        # ar = line.split()
+        args = line_split(line)
         if not args:
             print("** class name missing **")
             return
@@ -159,24 +186,27 @@ class HBNBCommand(cmd.Cmd):
             return
         selected_instance = all_objects[key]
 
-        if args[2] not in selected_instance.to_dict().keys():
+        # if args[2] not in selected_instance.to_dict().keys():
+        # if they are just 3 arguments
+        if len(args) == 3:
             print("** value missing **")
             return
-        if len(args) > 4:
-            args = args[:4]
 
-        if args[2] in ["created_at", "id"]:
-            return
-
-        # determine the datatype of the  value and do casting
-        try:
-            arg_type = type(selected_instance.__dict__[args[2]])
-            args[3] = arg_type(args[3])
-        except Exception:
-            print("fail to update value")
-            return
-        # setattr(selected_instance, args[2], args[3])
-        selected_instance.__dict__[args[2]] = args[3]
+        if len(args) == 4:
+            if args[2] in selected_instance.__class__.__dict__.keys():
+                argtype = type(selected_instance.__class__.__dict__[args[2]])
+                selected_instance.__dict__[args[2]] = argtype(args[3])
+            else:
+                selected_instance.__dict__[args[2]] = args[3]
+        elif type(eval(args[2])) == dict:
+            for k, v in eval(args[2]):
+                if (k in selected_instance.__class__.__dict__.keys()) and type(
+                    selected_instance.__class__.__dict__[k]
+                ) in [str, int, float]:
+                    argtype = type(selected_instance.__class__.__dict__[k])
+                    selected_instance.__dict__[k] = argtype(v)
+                else:
+                    selected_instance.__dict__[k] = v
         storage.save()
 
     def do_count(self, line: str):
@@ -196,38 +226,30 @@ class HBNBCommand(cmd.Cmd):
             return
         print("Usage: count <className>")
 
-    def default(self, line: str):
-        """
-        Default method that executes when a command entered
-        cant find a corresponding function to call or execute
-        """
-        commands = {
-            "create": self.do_create,
-            "show": self.do_show,
-            "destroy": self.do_destroy,
-            "all": self.do_all,
-            "update": self.do_update,
-            "count": self.do_count,
-        }
-        if "." in line and line[-1] == ")":
-            class_name, command = line.split(".")
-            # print(command.split("("))
-            if class_name in classes:
-                instruction = command.split("(")[0]
-                if instruction in commands.keys():
-                    if instruction in ["all", "count"]:
-                        # execute the instruction by calling
-                        # appropriat function
-                        commands[instruction](class_name)
 
-                    return
-                else:
-                    print("")
-                    return
-            else:
-                print("** class doesn't exist **")
-                return
-        return cmd.Cmd.default(self, line)
+def default(self, line: str):
+    """
+    Default method that executes when a command entered
+    cant find a corresponding function to call or execute
+    """
+    commands = {
+        "create": self.do_create,
+        "show": self.do_show,
+        "destroy": self.do_destroy,
+        "all": self.do_all,
+        "update": self.do_update,
+        "count": self.do_count,
+    }
+    dot = re.search(r"\.", line)
+    if dot is not None:
+        instruction = [line[: dot.span()[0]], line[dot.span()[1]:]]
+        bracket = re.search(r"\((.*?)\)", instruction[1])
+        if bracket is not None:
+            cmd = [instruction[1][: bracket.span()[0]], bracket.group()[1:-1]]
+            if cmd[0] in commands.keys():
+                return commands[cmd[0]](f"{instruction[0]} {cmd[1]}")
+    print(f"*** Unknown syntax: {line}")
+    return False
 
 
 if __name__ == "__main__":

@@ -40,7 +40,14 @@ class TestFileStorage(unittest.TestCase):
         """Test for save  method"""
         base = BaseModel()
 
-    
+    def test_alli(self):
+        storage = FileStorage()
+        self.assertEqual(dict, type(storage.all()))
+
+    def test_all_with_arg(self):
+        storage = FileStorage()
+        with self.assertRaises(TypeError):
+            storage.all(None)
     
     def test_all(self):
         """Test for all method"""

@@ -6,4 +6,4 @@ alias c="git commit -m "
 alias p="git push"
 alias e="chmod +x *.py"
 alias b="black"
-
+alias t="python3 -m unittest discover tests"

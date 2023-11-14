@@ -175,7 +175,8 @@ class HBNBCommand(cmd.Cmd):
         except Exception:
             print("fail to update value")
             return
-        setattr(selected_instance, args[2], args[3])
+        # setattr(selected_instance, args[2], args[3])
+        selected_instance.__dict__[args[2]] = args[3]
         storage.save()
 
     def do_count(self, line: str):

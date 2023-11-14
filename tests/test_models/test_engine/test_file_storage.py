@@ -3,6 +3,7 @@
 import unittest
 import os
 from models.base_model import BaseModel
+from models.user import User
 from models.engine.file_storage import FileStorage
 
 
@@ -51,8 +52,11 @@ class TestFileStorage(unittest.TestCase):
     def test_new(self):
         """Test for save method"""
         base = BaseModel()
+        user = User()
         storage = FileStorage()
         storage.new(base)
+        storage.new(user)
+        
         self.assertIn("BaseModel." + base.id, storage.all().keys())
 
     def test_reload(self):

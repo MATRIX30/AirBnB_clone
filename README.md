@@ -262,7 +262,7 @@ Any form of plagiarism is strictly forbidden and will result in removal from the
 - No cross browsers
 - You have to follow all requirements but some `margin/padding` are missing - you should try to fit as much as you can to screenshots
 ## More Info
-![web_static Architecture](/images/web_static_architecture.png)
+![web_static Architecture](web_static/images/web_static_architecture.png)
 ## Description of team 💻
 
 Due to difficulty in finding a serious Partner the development team was made up of Tekoh Palma Achu
